@@ -1,0 +1,4 @@
+---
+applications:
+- name: rfidcloneinspector
+  path: ./restapi/target/restapi-0.0.1-SNAPSHOT-exec.jar
