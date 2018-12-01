@@ -5,5 +5,5 @@ import com.cit.locator.distance.om.Distance;
 import com.cit.locator.distance.om.TravelMeans;
 
 public interface IDistanceService {
-    Distance execute(GeoLocation current, GeoLocation previous, TravelMeans travelMeans );
+    Distance findTravelRoute(GeoLocation from, GeoLocation to, TravelMeans travelMeans );
 }

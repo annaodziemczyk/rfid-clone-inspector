@@ -5,5 +5,5 @@ package com.cit.locator.distance.om;
  */
 public enum TravelMeans {
 
-    walking, driving, flyDrive
+    walking, driving, transit
 }

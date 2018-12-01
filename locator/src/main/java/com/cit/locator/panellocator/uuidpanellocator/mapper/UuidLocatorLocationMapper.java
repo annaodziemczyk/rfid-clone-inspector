@@ -19,8 +19,8 @@ public interface UuidLocatorLocationMapper {
     @Mappings({
             @Mapping(target = "id", ignore = true),
             @Mapping(source="altitude", target = "geoLocation.z"),
-            @Mapping(source="coordinates.longitude", target = "geoLocation.x"),
-            @Mapping(source="coordinates.latitude", target = "geoLocation.y"),
+            @Mapping(source="coordinates.longitude", target = "geoLocation.y"),
+            @Mapping(source="coordinates.latitude", target = "geoLocation.x"),
             @Mapping(source = "relativeLocation", target = "building")
     })
     RfidReaderPanel dtoToDomain(UuidLocatorLocationDto uuidLocatorLocationDto);

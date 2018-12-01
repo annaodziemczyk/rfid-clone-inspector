@@ -1,24 +1,24 @@
 package com.cit.locator.distance.om;
 
 public class Distance {
-    private double length;
-    private int duration;
+    private double lengthInMeters;
+    private long durationInSeconds;
     private TravelMeans travelMeans;
 
-    public double getLength() {
-        return length;
+    public double getLengthInMeters() {
+        return lengthInMeters;
     }
 
-    public void setLength(double length) {
-        this.length = length;
+    public void setLengthInMeters(double lengthInMeters) {
+        this.lengthInMeters = lengthInMeters;
     }
 
-    public int getDuration() {
-        return duration;
+    public long getDurationInSeconds() {
+        return durationInSeconds;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setDurationInSeconds(long durationInSeconds) {
+        this.durationInSeconds = durationInSeconds;
     }
 
     public TravelMeans getTravelMeans() {

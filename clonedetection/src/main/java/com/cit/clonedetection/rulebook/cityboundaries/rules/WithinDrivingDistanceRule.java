@@ -2,6 +2,8 @@ package com.cit.clonedetection.rulebook.cityboundaries.rules;
 
 import com.cit.clonedetection.rulebook.rules.CommonCloneDetectionRule;
 import com.cit.common.om.access.device.RfidReaderPanel;
+import com.cit.locator.distance.om.Distance;
+import com.cit.locator.distance.om.TravelMeans;
 import com.cit.locator.distance.service.IDistanceService;
 import com.cit.locator.panellocator.IPanelLocatorService;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
@@ -25,8 +27,7 @@ public class WithinDrivingDistanceRule extends CommonCloneDetectionRule {
     @When
     public boolean when() {
 
-
-//        Distance distance = this.distanceService.execute(currentAccessReaderPanel.getGeoLocation(), previousAccessReaderPanel.getGeoLocation(), TravelMeans.driving);
+        Distance distance = this.distanceService.findTravelRoute(this.previousAccessRequest.getAccessIssuer().getGeoLocation(), this.currentAccessRequest.getAccessIssuer().getGeoLocation(), TravelMeans.driving);
         return true;
     }
 
