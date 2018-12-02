@@ -13,9 +13,6 @@ import org.springframework.stereotype.Component;
 public class GoogleApiConfig {
 
     private String key;
-    private String baseUri;
-    private String distancematrix;
-    private String units;
 
     public String getKey() {
         return key;
@@ -25,27 +22,4 @@ public class GoogleApiConfig {
         this.key = key;
     }
 
-    public String getBaseUri() {
-        return baseUri;
-    }
-
-    public void setBaseUri(String baseUri) {
-        this.baseUri = baseUri;
-    }
-
-    public String getDistancematrix() {
-        return distancematrix;
-    }
-
-    public void setDistancematrix(String distancematrix) {
-        this.distancematrix = distancematrix;
-    }
-
-    public String getUnits() {
-        return units;
-    }
-
-    public void setUnits(String units) {
-        this.units = units;
-    }
 }
