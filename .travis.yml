@@ -13,7 +13,7 @@ env:
 
 addons:
   sonarcloud:
-    organization: "annaodziemczyk"
+    organization: "annaodziemczyk-github"
     token:
       secure: $SONAR_TOKEN
 before_install:
