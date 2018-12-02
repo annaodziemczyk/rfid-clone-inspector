@@ -1,7 +1,7 @@
 package com.cit.restapi.rfidpanel;
 
-import com.cit.clonedetection.CloneDetectionResult;
-import com.cit.clonedetection.ICloneDetectionService;
+import com.cit.clonedetection.om.CloneDetectionResult;
+import com.cit.clonedetection.service.ICloneDetectionService;
 import com.cit.common.om.access.device.RfidReaderPanel;
 import com.cit.common.om.access.request.AccessRequest;
 import com.cit.common.om.access.token.RfidBadge;

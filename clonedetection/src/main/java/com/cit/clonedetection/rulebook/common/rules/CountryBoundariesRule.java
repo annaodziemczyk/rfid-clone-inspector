@@ -1,7 +1,10 @@
-package com.cit.clonedetection.rulebook.rules;
+package com.cit.clonedetection.rulebook.common.rules;
 
+import com.cit.clonedetection.om.CloneDetectionResult;
+import com.cit.clonedetection.rulebook.CloneDetectionRuleBook;
 import com.cit.clonedetection.rulebook.remotelocation.IRemoteLocationRuleBook;
 import com.cit.common.om.location.Address;
+import com.deliveredtechnologies.rulebook.RuleState;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -9,11 +12,11 @@ import com.deliveredtechnologies.rulebook.spring.RuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Created by odziea on 11/28/2018.
+ * Created by odziea on 12/2/2018.
  */
 @RuleBean
 @Rule(order = 3)
-public class RemoteLocationRule extends CommonCloneDetectionRule{
+public class CountryBoundariesRule extends CommonCloneDetectionRule{
 
     @Autowired
     private IRemoteLocationRuleBook remoteLocationRuleBook;
@@ -24,11 +27,17 @@ public class RemoteLocationRule extends CommonCloneDetectionRule{
         Address currentLocationAddress=this.retrieveAddress(currentAccessRequest.getAccessIssuer());
         Address previousLocationAddress=this.retrieveAddress(previousAccessRequest.getAccessIssuer());
 
-        return !currentLocationAddress.getCountry().equals(previousLocationAddress.getCountry());
+        return currentLocationAddress.getCountry().equals(previousLocationAddress.getCountry());
     }
 
     @Then
-    public void then() {
+    public RuleState then() {
+
         remoteLocationRuleBook.run(this.getFacts());
+        if(remoteLocationRuleBook.getResult().isPresent()){
+            this.cloneDetectionResult = (CloneDetectionResult) remoteLocationRuleBook.getResult().get();
+        }
+
+        return RuleState.BREAK;
     }
 }

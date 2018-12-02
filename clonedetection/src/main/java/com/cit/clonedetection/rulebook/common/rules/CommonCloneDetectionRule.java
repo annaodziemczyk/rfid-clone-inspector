@@ -1,13 +1,14 @@
-package com.cit.clonedetection.rulebook.rules;
+package com.cit.clonedetection.rulebook.common.rules;
 
-import com.cit.clonedetection.rulebook.facts.CloneDetectionFacts;
+import com.cit.clonedetection.om.CloneDetectionResult;
+import com.cit.clonedetection.rulebook.common.facts.CloneDetectionFacts;
 import com.cit.common.om.access.device.RfidReaderPanel;
 import com.cit.common.om.access.device.TokenReader;
 import com.cit.common.om.access.request.AccessRequest;
 import com.cit.common.om.location.Address;
-import com.deliveredtechnologies.rulebook.FactMap;
 import com.deliveredtechnologies.rulebook.NameValueReferableMap;
 import com.deliveredtechnologies.rulebook.annotation.Given;
+import com.deliveredtechnologies.rulebook.annotation.Result;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -22,6 +23,9 @@ public abstract class CommonCloneDetectionRule {
 
     @Given("previousAccessRequest")
     protected AccessRequest previousAccessRequest;
+
+    @Result
+    protected CloneDetectionResult cloneDetectionResult=new CloneDetectionResult();
 
     protected NameValueReferableMap<AccessRequest> getFacts(){
         CloneDetectionFacts facts = new CloneDetectionFacts(this.currentAccessRequest, this.previousAccessRequest);

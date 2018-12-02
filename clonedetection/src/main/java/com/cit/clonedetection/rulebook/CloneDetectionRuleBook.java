@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class CloneDetectionRuleBook extends SpringAwareRuleBookRunner implements ICloneDetectionRuleBook {
 
     public CloneDetectionRuleBook() {
-        super("com.cit.clonedetection.rulebook.rules");
+        super("com.cit.clonedetection.rulebook.common.rules");
     }
 
 }

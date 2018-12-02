@@ -1,12 +1,16 @@
 package com.cit.clonedetection.rulebook.remotelocation.rules;
 
-import com.cit.clonedetection.rulebook.rules.CommonCloneDetectionRule;
+import com.cit.clonedetection.rulebook.common.rules.CommonCloneDetectionRule;
+import com.cit.locator.distance.om.TravelRoute;
 import com.cit.locator.distance.service.IDistanceService;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
 import com.deliveredtechnologies.rulebook.spring.RuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by odziea on 11/28/2018.
@@ -17,15 +21,23 @@ public class WithinFlyingDistanceRule extends CommonCloneDetectionRule {
 
     @Autowired
     private IDistanceService distanceService;
-
+    private TravelRoute travelRoute;
 
     @When
     public boolean when() {
-        return true;
+
+        travelRoute = this.distanceService.findShortestTransitRoute(this.previousAccessRequest.getAccessIssuer().getGeoLocation(), this.currentAccessRequest.getAccessIssuer().getGeoLocation(), this.previousAccessRequest.getAccessTime().toInstant());
+        Duration timeSincePreviousRequest = this.durationBetweenAccessTimes();
+
+        return travelRoute.getDurationInSeconds()>=timeSincePreviousRequest.getSeconds();
     }
 
     @Then
     public void then() {
+        long minutes = TimeUnit.SECONDS.toHours(travelRoute.getDurationInSeconds());
 
+        this.cloneDetectionResult.setGenuineCard(false);
+        this.cloneDetectionResult.setReason(String.format("Impossible to travel between the locations within %s. It takes minimum of %s minutes to drive.",
+                this.durationBetweenAccessTimes().toString(), Long.valueOf(minutes)));
     }
 }

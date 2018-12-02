@@ -1,7 +1,7 @@
-package com.cit.clonedetection;
+package com.cit.clonedetection.service;
 
+import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.common.om.access.request.AccessRequest;
-import org.springframework.stereotype.Service;
 
 /**
  * Created by odziea on 11/12/2018.

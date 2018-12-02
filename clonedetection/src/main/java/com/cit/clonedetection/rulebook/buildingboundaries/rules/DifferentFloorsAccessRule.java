@@ -1,8 +1,8 @@
 package com.cit.clonedetection.rulebook.buildingboundaries.rules;
 
-import com.cit.clonedetection.rulebook.rules.CommonCloneDetectionRule;
-import com.cit.common.om.location.Address;
+import com.cit.clonedetection.rulebook.common.rules.CommonCloneDetectionRule;
 import com.cit.common.om.location.GeoLocation;
+import com.deliveredtechnologies.rulebook.RuleState;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -19,6 +19,7 @@ public class DifferentFloorsAccessRule extends CommonCloneDetectionRule {
 
     protected final double AVG_STOREY_HIGHT_IN_FEET = 10;
     protected final long MIN_LIFT_TRANSIT_TIME_IN_MILLS = 100000;
+    private int differenceInFloors=0;
 
     @When
     public boolean when() {
@@ -26,7 +27,7 @@ public class DifferentFloorsAccessRule extends CommonCloneDetectionRule {
         GeoLocation currentGeolocation=currentAccessRequest.getAccessIssuer().getGeoLocation();
         GeoLocation previousGeolocation=previousAccessRequest.getAccessIssuer().getGeoLocation();
 
-        int differenceInFloors = this.floorDifference(currentGeolocation.getZ(), previousGeolocation.getZ());
+        this.differenceInFloors = this.floorDifference(currentGeolocation.getZ(), previousGeolocation.getZ());
 
         return  differenceInFloors > 0 && this.impossibleToTravel(differenceInFloors);
     }
@@ -42,14 +43,16 @@ public class DifferentFloorsAccessRule extends CommonCloneDetectionRule {
         if(altitude1!=altitude2){
             double higherAltitude = Math.max(altitude1, altitude2);
             double lowerAltitude = Math.min(altitude1, altitude2);
-            floorDifference = (int)((higherAltitude-lowerAltitude)%AVG_STOREY_HIGHT_IN_FEET);
+            floorDifference = (int)(Math.floor((higherAltitude-lowerAltitude)/AVG_STOREY_HIGHT_IN_FEET));
         }
 
         return floorDifference;
     }
 
     @Then
-    public void then() {
-
+    public RuleState then() {
+        this.cloneDetectionResult.setGenuineCard(false);
+        this.cloneDetectionResult.setReason(String.format("Impossible to travel between %s building floors within %s", this.differenceInFloors+1, this.durationBetweenAccessTimes().toString()));
+        return RuleState.BREAK;
     }
 }

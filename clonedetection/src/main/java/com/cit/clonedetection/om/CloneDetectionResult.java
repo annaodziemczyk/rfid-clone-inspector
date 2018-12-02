@@ -1,4 +1,4 @@
-package com.cit.clonedetection;
+package com.cit.clonedetection.om;
 
 import com.cit.common.om.access.device.RfidReaderPanel;
 import com.cit.common.om.access.request.AccessRequest;
@@ -8,8 +8,6 @@ import com.cit.common.om.access.token.RfidBadge;
 /**
  * Created by odziea on 11/12/2018.
  */
-//@Data
-//@Builder
 public class CloneDetectionResult {
 
     private boolean genuineCard;

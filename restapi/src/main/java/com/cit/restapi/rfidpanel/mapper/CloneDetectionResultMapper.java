@@ -1,7 +1,6 @@
 package com.cit.restapi.rfidpanel.mapper;
 
-import com.cit.clonedetection.CloneDetectionResult;
-import com.cit.restapi.common.mapper.CommonMapper;
+import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.restapi.rfidpanel.dto.CloneDetectionResultDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

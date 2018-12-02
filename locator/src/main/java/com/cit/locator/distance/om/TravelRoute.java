@@ -1,9 +1,11 @@
 package com.cit.locator.distance.om;
 
-public class Distance {
+import com.google.maps.model.TravelMode;
+
+public class TravelRoute {
     private double lengthInMeters;
     private long durationInSeconds;
-    private TravelMeans travelMeans;
+    private TravelMode travelMode;
 
     public double getLengthInMeters() {
         return lengthInMeters;
@@ -21,11 +23,11 @@ public class Distance {
         this.durationInSeconds = durationInSeconds;
     }
 
-    public TravelMeans getTravelMeans() {
-        return travelMeans;
+    public TravelMode getTravelMode() {
+        return travelMode;
     }
 
-    public void setTravelMeans(TravelMeans travelMeans) {
-        this.travelMeans = travelMeans;
+    public void setTravelMode(TravelMode travelMode) {
+        this.travelMode = travelMode;
     }
 }

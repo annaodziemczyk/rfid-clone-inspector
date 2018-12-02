@@ -123,6 +123,9 @@ public class MqttNotificationClient implements IMqttClient, IMqttNotificationCli
     }
 
     public void publish(String topic, String message) throws MqttException {
+        if(!this.mqttClient.isConnected()){
+            this.mqttClient.connect();
+        }
         MqttMessage mqttMessage = new MqttMessage(message.getBytes());
         mqttMessage.setQos(2);
         mqttMessage.setRetained(true);

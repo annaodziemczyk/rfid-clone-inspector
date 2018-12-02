@@ -1,4 +1,4 @@
-package com.cit.clonedetection.rulebook.facts;
+package com.cit.clonedetection.rulebook.common.facts;
 
 import com.cit.common.om.access.request.AccessRequest;
 import com.deliveredtechnologies.rulebook.FactMap;
