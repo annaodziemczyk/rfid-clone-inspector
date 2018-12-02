@@ -1,8 +1,7 @@
 package com.cit.notifier.message.mqtt;
 
-import com.cit.notifier.message.mqtt.config.MqttBrokerConfig;
 import org.eclipse.paho.client.mqttv3.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -13,8 +12,8 @@ import javax.annotation.PostConstruct;
 @Service
 public class MqttNotificationClient implements IMqttClient, IMqttNotificationClient {
 
-    @Autowired
-    MqttBrokerConfig mqttBrokerConfig;
+    @Value("#{environment['MQTT_BROKER']}")
+    String mqttBroker;
 
     private MqttClient mqttClient;
 
@@ -22,9 +21,9 @@ public class MqttNotificationClient implements IMqttClient, IMqttNotificationCli
 
     @PostConstruct
     public void init() throws MqttException {
-        if(this.mqttBrokerConfig!=null && this.mqttBrokerConfig.getBroker()!=null)
+        if(!this.mqttBroker.isEmpty())
         {
-            this.mqttClient = new MqttClient(this.mqttBrokerConfig.getBroker(), this.mqttClient.generateClientId());
+            this.mqttClient = new MqttClient(this.mqttBroker, this.mqttClient.generateClientId());
 
             this.connect();
         }
