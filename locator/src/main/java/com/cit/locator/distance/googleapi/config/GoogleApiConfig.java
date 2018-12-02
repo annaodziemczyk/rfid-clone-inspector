@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "googleapi")
-@PropertySource("classpath:googleapi_dev.properties")
+@PropertySource("classpath:googleapi.properties")
 public class GoogleApiConfig {
 
     private String key;
