@@ -121,13 +121,14 @@ public class MqttNotificationClient implements IMqttClient, IMqttNotificationCli
         this.mqttClient.unsubscribe(topicFilters);
     }
 
-    public void publish(String topic, String message) throws MqttException {
+    @Override
+    public void publish(String topic, byte[] message) throws MqttException {
         if(!this.mqttClient.isConnected()){
             this.mqttClient.connect();
         }
-        MqttMessage mqttMessage = new MqttMessage(message.getBytes());
+        MqttMessage mqttMessage = new MqttMessage(message);
         mqttMessage.setQos(2);
-        mqttMessage.setRetained(true);
+        mqttMessage.setRetained(false);
         this.publish(topic, mqttMessage);
     }
 

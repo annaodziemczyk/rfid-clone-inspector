@@ -5,5 +5,5 @@ package com.cit.notifier.message.mqtt.publish;
  */
 public interface IMqttPublisher {
 
-    void publish(String topic, String message);
+    void publish(String topic, byte[] message);
 }

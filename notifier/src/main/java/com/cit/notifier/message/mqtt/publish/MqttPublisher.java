@@ -15,7 +15,7 @@ public class MqttPublisher implements IMqttPublisher{
     IMqttNotificationClient mqttNotificationClient;
 
     @Override
-    public void publish(String topic, String message) {
+    public void publish(String topic, byte[] message) {
 
         try {
             this.mqttNotificationClient.publish(topic, message);

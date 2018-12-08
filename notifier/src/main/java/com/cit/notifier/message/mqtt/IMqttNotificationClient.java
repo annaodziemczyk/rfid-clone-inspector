@@ -7,5 +7,5 @@ import org.eclipse.paho.client.mqttv3.MqttException;
  */
 public interface IMqttNotificationClient {
 
-    void publish(String topic, String message) throws MqttException;
+    void publish(String topic, byte[] message) throws MqttException;
 }

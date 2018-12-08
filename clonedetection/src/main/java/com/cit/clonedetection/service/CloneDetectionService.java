@@ -1,5 +1,6 @@
 package com.cit.clonedetection.service;
 
+import com.cit.clonedetection.mapper.CloneDetectionAlertMapper;
 import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.clonedetection.rulebook.ICloneDetectionRuleBook;
 import com.cit.clonedetection.rulebook.common.facts.CloneDetectionFacts;
@@ -8,6 +9,7 @@ import com.cit.common.om.access.request.AccessRequest;
 import com.cit.common.om.access.token.RfidBadge;
 import com.cit.locator.panellocator.IPanelLocatorService;
 import com.cit.notifier.INotificationService;
+import com.cit.notifier.dto.CloneDetectionAlertDto;
 import com.deliveredtechnologies.rulebook.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class CloneDetectionService implements ICloneDetectionService {
     @Autowired
     INotificationService notificationService;
 
+    @Autowired
+    CloneDetectionAlertMapper cloneDetectionAlertMapper;
+
     @Override
     public CloneDetectionResult checkForClonedCard(AccessRequest accessRequest) {
 
@@ -62,7 +67,8 @@ public class CloneDetectionService implements ICloneDetectionService {
                 validationRulesResult.setGenuineCard(result.isGenuineCard());
 
                 if(!validationRulesResult.isGenuineCard()){
-                    notificationService.sendNotification();
+                    CloneDetectionAlertDto cloneDetectionAlertDto = cloneDetectionAlertMapper.domainToAlertDto(result);
+                    notificationService.sendCloneDetectionAlert(cloneDetectionAlertDto);
                 }
             }else{
                 validationRulesResult.setReason("Possible time-distance event.");

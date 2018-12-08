@@ -1,6 +1,9 @@
 package com.cit.notifier;
 
+import com.cit.notifier.dto.CloneDetectionAlertDto;
 import com.cit.notifier.message.mqtt.publish.IMqttPublisher;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +17,13 @@ public class NotificationService implements  INotificationService{
     private IMqttPublisher publisher;
 
     @Override
-    public void sendNotification() {
-        publisher.publish("TestTopic", "test message");
+    public void sendCloneDetectionAlert(CloneDetectionAlertDto cloneDetectionAlertDto) {
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            publisher.publish(MessageTopics.CLONE_DETECTION_ALERT, mapper.writeValueAsBytes(cloneDetectionAlertDto));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }
