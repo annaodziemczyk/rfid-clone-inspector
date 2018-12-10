@@ -43,8 +43,8 @@ public class BuildingBoundariesRule extends CommonCloneDetectionRule {
     public RuleState then() {
         buildingBoundariesRuleBook.run(this.getFacts());
         if(buildingBoundariesRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = new com.deliveredtechnologies.rulebook.Result<>();
-            this.cloneDetectionResult.setValue(((CloneDetectionResult)buildingBoundariesRuleBook.getResult().get()));
+            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) buildingBoundariesRuleBook.getResult().get();
+
         }
         return RuleState.BREAK;
     }
