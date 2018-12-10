@@ -4,6 +4,7 @@ import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.clonedetection.rulebook.remotelocation.IRemoteLocationRuleBook;
 import com.cit.common.om.location.Address;
 import com.deliveredtechnologies.rulebook.RuleState;
+import com.deliveredtechnologies.rulebook.annotation.Result;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -20,6 +21,9 @@ public class RemoteLocationRule extends CommonCloneDetectionRule{
     @Autowired
     private IRemoteLocationRuleBook remoteLocationRuleBook;
 
+    @Result
+    protected com.deliveredtechnologies.rulebook.Result<CloneDetectionResult> cloneDetectionResult;
+
     @When
     public boolean when() {
 
@@ -31,10 +35,9 @@ public class RemoteLocationRule extends CommonCloneDetectionRule{
 
     @Then
     public RuleState then() {
-
         remoteLocationRuleBook.run(this.getFacts());
         if(remoteLocationRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = (CloneDetectionResult) remoteLocationRuleBook.getResult().get();
+            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) remoteLocationRuleBook.getResult().get();
         }
         return RuleState.BREAK;
     }

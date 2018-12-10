@@ -1,8 +1,11 @@
 package com.cit.clonedetection.rulebook.remotelocation.rules;
 
+import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.clonedetection.rulebook.common.rules.CommonCloneDetectionRule;
 import com.cit.locator.distance.om.TravelRoute;
 import com.cit.locator.distance.service.IDistanceService;
+import com.deliveredtechnologies.rulebook.RuleState;
+import com.deliveredtechnologies.rulebook.annotation.Result;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -23,6 +26,9 @@ public class WithinFlyingDistanceRule extends CommonCloneDetectionRule {
     private IDistanceService distanceService;
     private TravelRoute travelRoute;
 
+    @Result
+    protected CloneDetectionResult cloneDetectionResult;
+
     @When
     public boolean when() {
 
@@ -33,11 +39,15 @@ public class WithinFlyingDistanceRule extends CommonCloneDetectionRule {
     }
 
     @Then
-    public void then() {
+    public RuleState then() {
         long minutes = TimeUnit.SECONDS.toHours(travelRoute.getDurationInSeconds());
 
+        this.cloneDetectionResult = new CloneDetectionResult();
+        this.cloneDetectionResult.setPreviousAccessRequest(this.previousAccessRequest);
+        this.cloneDetectionResult.setAccessRequest(currentAccessRequest);
         this.cloneDetectionResult.setGenuineCard(false);
-        this.cloneDetectionResult.setReason(String.format("Impossible to travel between the locations within %s. It takes minimum of %s minutes to drive.",
-                this.durationBetweenAccessTimes().toString(), Long.valueOf(minutes)));
+        this.cloneDetectionResult.setReason(String.format("Impossible to travel between the locations within %s. It takes minimum of %s to commute.",
+                this.formatDisplayTime(this.durationBetweenAccessTimes().getSeconds()), this.formatDisplayTime(travelRoute.getDurationInSeconds())));
+        return RuleState.BREAK;
     }
 }

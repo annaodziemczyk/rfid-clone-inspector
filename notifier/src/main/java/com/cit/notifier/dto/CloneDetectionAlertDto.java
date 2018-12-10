@@ -1,38 +1,19 @@
 package com.cit.notifier.dto;
 
+import com.cit.notifier.om.AlertSeverity;
+
 /**
  * Created by odziea on 12/8/2018.
  */
-public class CloneDetectionAlertDto {
+public class CloneDetectionAlertDto extends AlertDto{
 
-    private String severity;
-    private String title;
-    private String description;
     private AccessEventDto currentEvent;
     private AccessEventDto previousEvent;
 
-    public String getSeverity() {
-        return severity;
-    }
-
-    public void setSeverity(String severity) {
-        this.severity = severity;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public CloneDetectionAlertDto(){
+        this.setSeverity(AlertSeverity.High.name());
+        this.setTitle("Possible Cloned Access Card");
+        this.setDescription("An access-card has been used that was very recently used in another location, indicating that is unlikely to be the same card-holder");
     }
 
     public AccessEventDto getCurrentEvent() {

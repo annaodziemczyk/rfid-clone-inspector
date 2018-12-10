@@ -10,11 +10,11 @@ import com.cit.common.om.access.token.RfidBadge;
  */
 public class CloneDetectionResult {
 
-    private boolean genuineCard;
+    private boolean genuineCard=true;
 
     private AccessRequest<RfidBadge, RfidReaderPanel> accessRequest;
     private AccessRequest<RfidBadge, RfidReaderPanel> previousAccessRequest;
-    private String reason;
+    private String reason="Possible time-distance event.";
 
 
     public boolean isGenuineCard() {

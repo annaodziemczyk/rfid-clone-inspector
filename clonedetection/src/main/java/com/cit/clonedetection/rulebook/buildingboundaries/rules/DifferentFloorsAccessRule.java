@@ -1,8 +1,10 @@
 package com.cit.clonedetection.rulebook.buildingboundaries.rules;
 
+import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.clonedetection.rulebook.common.rules.CommonCloneDetectionRule;
 import com.cit.common.om.location.GeoLocation;
 import com.deliveredtechnologies.rulebook.RuleState;
+import com.deliveredtechnologies.rulebook.annotation.Result;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -20,6 +22,9 @@ public class DifferentFloorsAccessRule extends CommonCloneDetectionRule {
     protected final double AVG_STOREY_HIGHT_IN_FEET = 10;
     protected final long MIN_LIFT_TRANSIT_TIME_IN_MILLS = 100000;
     private int differenceInFloors=0;
+
+    @Result
+    protected CloneDetectionResult cloneDetectionResult;
 
     @When
     public boolean when() {
@@ -51,6 +56,9 @@ public class DifferentFloorsAccessRule extends CommonCloneDetectionRule {
 
     @Then
     public RuleState then() {
+        this.cloneDetectionResult = new CloneDetectionResult();
+        this.cloneDetectionResult.setPreviousAccessRequest(this.previousAccessRequest);
+        this.cloneDetectionResult.setAccessRequest(currentAccessRequest);
         this.cloneDetectionResult.setGenuineCard(false);
         this.cloneDetectionResult.setReason(String.format("Impossible to travel between %s building floors within %s", this.differenceInFloors+1, this.durationBetweenAccessTimes().toString()));
         return RuleState.BREAK;

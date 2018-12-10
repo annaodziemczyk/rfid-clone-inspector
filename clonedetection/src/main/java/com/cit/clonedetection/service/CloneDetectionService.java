@@ -62,22 +62,17 @@ public class CloneDetectionService implements ICloneDetectionService {
 
             if (cloneDetectionResult.isPresent()) {
 
-                CloneDetectionResult result = (CloneDetectionResult) cloneDetectionResult.get().getValue();
-                validationRulesResult.setReason(result.getReason());
-                validationRulesResult.setGenuineCard(result.isGenuineCard());
+                Result<CloneDetectionResult> result = (Result<CloneDetectionResult>) cloneDetectionResult.get().getValue();
 
-                if(!validationRulesResult.isGenuineCard()){
-                    CloneDetectionAlertDto cloneDetectionAlertDto = cloneDetectionAlertMapper.domainToAlertDto(result);
+                validationRulesResult.setReason(result.getValue().getReason());
+                validationRulesResult.setGenuineCard(result.getValue().isGenuineCard());
+
+                if(!result.getValue().isGenuineCard()){
+                    CloneDetectionAlertDto cloneDetectionAlertDto = cloneDetectionAlertMapper.domainToAlertDto(result.getValue());
                     notificationService.sendCloneDetectionAlert(cloneDetectionAlertDto);
                 }
-            }else{
-                validationRulesResult.setReason("Possible time-distance event.");
-                validationRulesResult.setGenuineCard(true);
             }
 
-        }else{
-            validationRulesResult.setReason("Possible time-distance event.");
-            validationRulesResult.setGenuineCard(true);
         }
 
         this.accessRequestManager.recordAccessRequest(accessRequest);

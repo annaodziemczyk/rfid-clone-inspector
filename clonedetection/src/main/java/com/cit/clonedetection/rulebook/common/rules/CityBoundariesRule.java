@@ -2,9 +2,9 @@ package com.cit.clonedetection.rulebook.common.rules;
 
 import com.cit.clonedetection.om.CloneDetectionResult;
 import com.cit.clonedetection.rulebook.cityboundaries.ICityBoundariesRuleBook;
-import com.cit.common.om.location.Address;
 import com.cit.common.om.location.GeoLocation;
 import com.deliveredtechnologies.rulebook.RuleState;
+import com.deliveredtechnologies.rulebook.annotation.Result;
 import com.deliveredtechnologies.rulebook.annotation.Rule;
 import com.deliveredtechnologies.rulebook.annotation.Then;
 import com.deliveredtechnologies.rulebook.annotation.When;
@@ -24,11 +24,15 @@ public class CityBoundariesRule extends CommonCloneDetectionRule {
     @Autowired
     private ICityBoundariesRuleBook cityBoundariesRuleBook;
 
+    @Result
+    protected com.deliveredtechnologies.rulebook.Result<CloneDetectionResult> cloneDetectionResult;
+
+
     @When
     public boolean when() {
         GeoLocation currentLocation=this.currentAccessRequest.getAccessIssuer().getGeoLocation();
         GeoLocation previousLocation=previousAccessRequest.getAccessIssuer().getGeoLocation();
-        DecimalFormat decimalFormat = new DecimalFormat("#.###");
+        DecimalFormat decimalFormat = new DecimalFormat("#.##");
         decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
         return decimalFormat.format(currentLocation.getX()).equals(decimalFormat.format(previousLocation.getX()))
@@ -37,10 +41,9 @@ public class CityBoundariesRule extends CommonCloneDetectionRule {
 
     @Then
     public RuleState then() {
-
         cityBoundariesRuleBook.run(this.getFacts());
         if(cityBoundariesRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = (CloneDetectionResult) cityBoundariesRuleBook.getResult().get();
+            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) cityBoundariesRuleBook.getResult().get();
         }
         return RuleState.BREAK;
     }
