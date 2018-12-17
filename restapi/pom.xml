@@ -128,7 +128,7 @@
 
 	<profiles>
 		<profile>
-			<id>staging</id>
+			<id>integration-test</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
