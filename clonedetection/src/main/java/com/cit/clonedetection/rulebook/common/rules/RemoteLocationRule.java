@@ -11,6 +11,8 @@ import com.deliveredtechnologies.rulebook.annotation.When;
 import com.deliveredtechnologies.rulebook.spring.RuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
+
 /**
  * Created by odziea on 11/28/2018.
  */
@@ -36,8 +38,9 @@ public class RemoteLocationRule extends CommonCloneDetectionRule{
     @Then
     public RuleState then() {
         remoteLocationRuleBook.run(this.getFacts());
-        if(remoteLocationRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) remoteLocationRuleBook.getResult().get();
+        Optional<com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>> cloneDetectionResult=remoteLocationRuleBook.getResult();
+        if(cloneDetectionResult.isPresent()){
+            this.cloneDetectionResult = cloneDetectionResult.get();
         }
         return RuleState.BREAK;
     }

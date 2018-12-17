@@ -11,8 +11,10 @@ import com.deliveredtechnologies.rulebook.annotation.When;
 import com.deliveredtechnologies.rulebook.spring.RuleBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.swing.text.html.Option;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 /**
  * Created by odziea on 11/28/2018.
@@ -42,9 +44,9 @@ public class BuildingBoundariesRule extends CommonCloneDetectionRule {
     @Then
     public RuleState then() {
         buildingBoundariesRuleBook.run(this.getFacts());
-        if(buildingBoundariesRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) buildingBoundariesRuleBook.getResult().get();
-
+        Optional<com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>>cloneDetectionResult=buildingBoundariesRuleBook.getResult();
+        if(cloneDetectionResult.isPresent()){
+            this.cloneDetectionResult = cloneDetectionResult.get();
         }
         return RuleState.BREAK;
     }

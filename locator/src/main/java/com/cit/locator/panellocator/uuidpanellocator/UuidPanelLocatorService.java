@@ -7,6 +7,8 @@ import com.cit.locator.panellocator.uuidpanellocator.dto.UuidLocatorLocationDto;
 import com.cit.locator.panellocator.uuidpanellocator.mapper.UuidLocatorLocationMapper;
 import com.sun.javafx.fxml.builder.URLBuilder;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ import java.net.URISyntaxException;
  */
 @Service
 public class UuidPanelLocatorService extends RestTemplateService implements IUuidPanelLocatorService {
+
+    Logger logger = LoggerFactory.getLogger(UuidPanelLocatorService.class);
 
     @Autowired
     private UuidLocatorUri uuidLocatorUri;
@@ -38,9 +42,9 @@ public class UuidPanelLocatorService extends RestTemplateService implements IUui
             rfidReaderPanel.setId(panelId);
 
         } catch (URISyntaxException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+           logger.error(e.getMessage());
         }
 
         return rfidReaderPanel;

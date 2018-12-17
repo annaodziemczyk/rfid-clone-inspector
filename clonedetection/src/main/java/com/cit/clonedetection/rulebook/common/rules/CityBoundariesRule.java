@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.Optional;
 
 /**
  * Created by odziea on 11/28/2018.
@@ -42,8 +43,9 @@ public class CityBoundariesRule extends CommonCloneDetectionRule {
     @Then
     public RuleState then() {
         cityBoundariesRuleBook.run(this.getFacts());
-        if(cityBoundariesRuleBook.getResult().isPresent()){
-            this.cloneDetectionResult = (com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>) cityBoundariesRuleBook.getResult().get();
+        Optional<com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>> cloneDetectionResult=cityBoundariesRuleBook.getResult();
+        if(cloneDetectionResult.isPresent()){
+            this.cloneDetectionResult = cloneDetectionResult.get();
         }
         return RuleState.BREAK;
     }

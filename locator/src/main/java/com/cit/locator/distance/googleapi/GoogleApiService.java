@@ -7,6 +7,9 @@ import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
 import com.google.maps.PendingResult;
 import com.google.maps.model.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,8 @@ public class GoogleApiService implements IGoogleApiService {
 
     @Value("#{environment['GOOGLE_API_KEY']}")
     private String googleApiKey;
+
+    Logger logger = LoggerFactory.getLogger(GoogleApiService.class);
 
     public TravelRoute distancematrix(GeoLocation from, GeoLocation to, TravelMode travelMode, Instant departureTime) {
 
@@ -59,7 +64,9 @@ public class GoogleApiService implements IGoogleApiService {
         try {
             latch.await();
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.warn("Interrupted!", e);
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
         }
 
 
