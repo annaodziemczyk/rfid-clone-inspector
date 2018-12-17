@@ -4,7 +4,7 @@ import com.deliveredtechnologies.rulebook.spring.SpringAwareRuleBookRunner;
 import org.springframework.stereotype.Service;
 
 /**
- * Created by odziea on 11/28/2018.
+ * Class to define a rule book encapsulating rules designed to detect cloned rfid card intances
  */
 @Service
 public class CloneDetectionRuleBook extends SpringAwareRuleBookRunner implements ICloneDetectionRuleBook {

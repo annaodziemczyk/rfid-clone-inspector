@@ -15,7 +15,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by odziea on 12/2/2018.
+ * Rules to identify whether the two access request panels are within walking distance
+ * given specified time constraints
  */
 @RuleBean
 @Rule(order = 1)
@@ -72,17 +73,16 @@ public class WithinWalkingDistanceRule extends CommonCloneDetectionRule {
      * @param to
      * @return
      */
-
     private double distanceInMeters(GeoLocation from,
                                 GeoLocation to) {
 
         double dLat  = Math.toRadians((to.getX() - from.getX()));
         double dLong = Math.toRadians((to.getY() - from.getY()));
 
-        from.setX(Math.toRadians(from.getX()));
-        to.setX(Math.toRadians(to.getX()));
+        double latFrom = Math.toRadians(from.getX());
+        double latTo =Math.toRadians(to.getX());
 
-        double a = haversin(dLat) + Math.cos(from.getX()) * Math.cos(to.getX()) * haversin(dLong);
+        double a = haversin(dLat) + Math.cos(latFrom) * Math.cos(latTo) * haversin(dLong);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
         return EARTH_RADIUS * c * 1000;
@@ -100,7 +100,7 @@ public class WithinWalkingDistanceRule extends CommonCloneDetectionRule {
         this.cloneDetectionResult.setGenuineCard(false);
 
         if(this.differenceInFloors>0){
-            this.cloneDetectionResult.setReason(String.format("Impossible to travel between %s building floors within %s", this.differenceInFloors+1, this.formatDisplayTime(this.durationBetweenAccessTimes().getSeconds())));
+            this.cloneDetectionResult.setReason(String.format("Impossible to travel between %s building floors within %s", this.differenceInFloors, this.formatDisplayTime(this.durationBetweenAccessTimes().getSeconds())));
         }else{
             this.cloneDetectionResult.setReason(String.format("Impossible to walk the distance within %s", this.formatDisplayTime(this.durationBetweenAccessTimes().getSeconds())));
         }

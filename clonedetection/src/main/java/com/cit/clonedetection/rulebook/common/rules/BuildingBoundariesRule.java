@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 import java.util.Optional;
 
 /**
- * Created by odziea on 11/28/2018.
+ * Rule identifying whether two access requests for a single card occurred within a building boundaries
  */
 @RuleBean
 @Rule(order = 1)
@@ -29,6 +29,10 @@ public class BuildingBoundariesRule extends CommonCloneDetectionRule {
     @Result
     protected com.deliveredtechnologies.rulebook.Result<CloneDetectionResult> cloneDetectionResult;
 
+    /**
+     * If both latitude and longitude match up 5 decimal places assume the two access requests have occurred in the same building
+     * @return
+     */
     @When
     public boolean when() {
 
@@ -38,9 +42,13 @@ public class BuildingBoundariesRule extends CommonCloneDetectionRule {
         decimalFormat.setRoundingMode(RoundingMode.FLOOR);
 
         return decimalFormat.format(currentLocation.getX()).equals(decimalFormat.format(previousLocation.getX()))
-                && decimalFormat.format(currentLocation.getY()).equals(decimalFormat.format(previousLocation.getY()));    }
+                && decimalFormat.format(currentLocation.getY()).equals(decimalFormat.format(previousLocation.getY()));
+    }
 
-
+    /**
+     * If two access requests occurred within building boundaries process clone detection rules for the building
+     * @return
+     */
     @Then
     public RuleState then() {
         buildingBoundariesRuleBook.run(this.getFacts());
