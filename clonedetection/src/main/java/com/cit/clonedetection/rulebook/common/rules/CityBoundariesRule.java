@@ -42,6 +42,10 @@ public class CityBoundariesRule extends CommonCloneDetectionRule {
 
     @Then
     public RuleState then() {
+        if(this.cloneDetectionResult!=null){
+            this.cloneDetectionResult.reset();
+        }
+        cityBoundariesRuleBook.setDefaultResult(new CloneDetectionResult());
         cityBoundariesRuleBook.run(this.getFacts());
         Optional<com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>> cloneDetectionResult=cityBoundariesRuleBook.getResult();
         if(cloneDetectionResult.isPresent()){

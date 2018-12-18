@@ -38,6 +38,10 @@ public class CountryBoundariesRule extends CommonCloneDetectionRule{
 
     @Then
     public RuleState then() {
+        if(this.cloneDetectionResult!=null){
+            this.cloneDetectionResult.reset();
+        }
+        remoteLocationRuleBook.setDefaultResult(new CloneDetectionResult());
         remoteLocationRuleBook.run(this.getFacts());
         Optional<com.deliveredtechnologies.rulebook.Result<CloneDetectionResult>>cloneDetectionResult=remoteLocationRuleBook.getResult();
         if(cloneDetectionResult.isPresent()){
