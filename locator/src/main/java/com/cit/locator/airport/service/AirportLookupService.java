@@ -34,6 +34,7 @@ public class AirportLookupService implements IAirportLookupService {
 
     private List<Airport> airports = new ArrayList<>();
     private Airport nearestAirport;
+    private Map<GeoLocation, Airport> locationToNearestAirport = new HashMap<>();
 
     private double lastShortestDistanceToAirport=0;
 
@@ -50,6 +51,10 @@ public class AirportLookupService implements IAirportLookupService {
     @Override
     public Airport findNearestAirport(GeoLocation geoLocation){
 
+        if(this.locationToNearestAirport.containsKey(geoLocation)){
+            return this.locationToNearestAirport.get(geoLocation);
+        }
+
         this.nearestAirport=null;
         this.lastShortestDistanceToAirport=0;
 
@@ -61,6 +66,8 @@ public class AirportLookupService implements IAirportLookupService {
                 nearestAirport=airport;
             }
         });
+
+        this.locationToNearestAirport.put(geoLocation, nearestAirport);
 
         return nearestAirport;
     }

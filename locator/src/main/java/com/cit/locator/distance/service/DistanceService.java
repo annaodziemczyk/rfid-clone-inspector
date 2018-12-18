@@ -27,7 +27,7 @@ public class DistanceService implements IDistanceService {
     private final double AVERAGE_WALKING_SPEED = 1.4;
     private final double AVERAGE_DRIVING_SPEED = 13.8889;
     private final double AVERAGE_FLYING_SPEED = 222.222;
-    private Map<GeoLocation, Airport> locationToNearestAirport = new HashMap<>();
+
 
     @Override
     public TravelRoute findShortestDrivingRoute(GeoLocation from, GeoLocation to, Instant departureTime) {
@@ -78,13 +78,7 @@ public class DistanceService implements IDistanceService {
     }
 
     private Airport findNearestAirport(GeoLocation geoLocation){
-        if(this.locationToNearestAirport.containsKey(geoLocation)){
-            return this.locationToNearestAirport.get(geoLocation);
-        }
-
         Airport nearestAirport=this.airportLookupService.findNearestAirport(geoLocation);
-        this.locationToNearestAirport.put(geoLocation, nearestAirport);
-
         return nearestAirport;
     }
 
