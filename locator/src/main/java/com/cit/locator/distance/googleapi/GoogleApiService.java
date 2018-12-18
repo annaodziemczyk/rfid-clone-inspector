@@ -2,6 +2,7 @@ package com.cit.locator.distance.googleapi;
 
 import com.cit.common.om.location.GeoLocation;
 import com.cit.locator.distance.om.TravelRoute;
+import com.cit.locator.exception.TravelRouteNotFoundException;
 import com.google.maps.DistanceMatrixApi;
 import com.google.maps.DistanceMatrixApiRequest;
 import com.google.maps.GeoApiContext;
@@ -9,7 +10,6 @@ import com.google.maps.PendingResult;
 import com.google.maps.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +22,12 @@ public class GoogleApiService implements IGoogleApiService {
     @Value("#{environment['GOOGLE_API_KEY']}")
     private String googleApiKey;
 
+    private DistanceMatrixElementStatus status;
+
     Logger logger = LoggerFactory.getLogger(GoogleApiService.class);
 
-    public TravelRoute distancematrix(GeoLocation from, GeoLocation to, TravelMode travelMode, Instant departureTime) {
-
+    public TravelRoute distancematrix(GeoLocation from, GeoLocation to, TravelMode travelMode, Instant departureTime) throws TravelRouteNotFoundException {
+        status=null;
         TravelRoute travelRoute = new TravelRoute();
         travelRoute.setTravelMode(travelMode);
         final CountDownLatch latch = new CountDownLatch(1);
@@ -46,6 +48,7 @@ public class GoogleApiService implements IGoogleApiService {
             public void onResult(DistanceMatrix distanceMatrix) {
 
                 DistanceMatrixElement element = distanceMatrix.rows[0].elements[0];
+                status=element.status;
                 travelRoute.setTravelMode(travelMode);
                 travelRoute.setDurationInSeconds(element.duration.inSeconds);
                 travelRoute.setLengthInMeters(element.distance.inMeters);
@@ -67,6 +70,10 @@ public class GoogleApiService implements IGoogleApiService {
             logger.warn("Interrupted!", e);
             // Restore interrupted state...
             Thread.currentThread().interrupt();
+        }
+
+        if(status!=DistanceMatrixElementStatus.OK){
+            throw new TravelRouteNotFoundException();
         }
 
 

@@ -25,14 +25,15 @@ public class WithinWalkingDistanceRule extends CommonCloneDetectionRule {
     @Result
     protected CloneDetectionResult cloneDetectionResult;
 
-    private static final int EARTH_RADIUS = 6371;
+    @Autowired
+    private IDistanceService distanceService;
 
     protected final double AVG_STOREY_HIGHT_IN_FEET = 10;
     protected final long MIN_LIFT_TRANSIT_TIME_IN_MILLS = 100000;
 
     private int differenceInFloors;
 
-    private final double AVERAGE_WALKING_SPEED = 1.4;
+
 
     @When
     public boolean when() {
@@ -40,12 +41,12 @@ public class WithinWalkingDistanceRule extends CommonCloneDetectionRule {
         GeoLocation currentLocation = this.currentAccessRequest.getAccessIssuer().getGeoLocation();
         GeoLocation previousLocation = this.previousAccessRequest.getAccessIssuer().getGeoLocation();
 
-        double distanceInMeters = this.distanceInMeters(previousLocation, currentLocation);
+        double distanceInMeters = this.distanceService.calculateDistanceInMeters(previousLocation, currentLocation);
         Duration timeSincePreviousRequest = this.durationBetweenAccessTimes();
 
         double timeBetweenFloors = travelTimeBetweenFloors(currentLocation.getZ(), previousLocation.getZ());
 
-        return (distanceInMeters*AVERAGE_WALKING_SPEED+timeBetweenFloors)>=timeSincePreviousRequest.getSeconds();
+        return (distanceService.calculateTravelTime(distanceInMeters, TravelMode.WALKING)+timeBetweenFloors)>=timeSincePreviousRequest.getSeconds();
     }
 
     private int floorDifference(double altitude1, double altitude2){
@@ -64,32 +65,6 @@ public class WithinWalkingDistanceRule extends CommonCloneDetectionRule {
 
         this.differenceInFloors = this.floorDifference(altitude1, altitude2);;
         return TimeUnit.MILLISECONDS.toSeconds(MIN_LIFT_TRANSIT_TIME_IN_MILLS*this.differenceInFloors);
-    }
-
-
-    /**
-     * credit: https://github.com/jasonwinn/haversine
-     * @param from
-     * @param to
-     * @return
-     */
-    private double distanceInMeters(GeoLocation from,
-                                GeoLocation to) {
-
-        double dLat  = Math.toRadians((to.getX() - from.getX()));
-        double dLong = Math.toRadians((to.getY() - from.getY()));
-
-        double latFrom = Math.toRadians(from.getX());
-        double latTo =Math.toRadians(to.getX());
-
-        double a = haversin(dLat) + Math.cos(latFrom) * Math.cos(latTo) * haversin(dLong);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-        return EARTH_RADIUS * c * 1000;
-    }
-
-    public static double haversin(double val) {
-        return Math.pow(Math.sin(val / 2), 2);
     }
 
     @Then

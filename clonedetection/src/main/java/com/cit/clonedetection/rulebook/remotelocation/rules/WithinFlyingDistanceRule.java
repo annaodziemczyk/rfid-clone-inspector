@@ -40,7 +40,6 @@ public class WithinFlyingDistanceRule extends CommonCloneDetectionRule {
 
     @Then
     public RuleState then() {
-        long minutes = TimeUnit.SECONDS.toHours(travelRoute.getDurationInSeconds());
 
         this.cloneDetectionResult = new CloneDetectionResult();
         this.cloneDetectionResult.setPreviousAccessRequest(this.previousAccessRequest);

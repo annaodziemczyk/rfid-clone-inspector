@@ -23,8 +23,8 @@ import static org.hamcrest.Matchers.*;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@IfProfileValue(name ="spring.profiles.active", value ="integration-test")
-//@ActiveProfiles("staging")
+@IfProfileValue(name ="spring.profiles.active", value ="integration-test")
+//@ActiveProfiles("integration-test")
 public class RfidPanelResourceIntegrationTest {
 
     @ClassRule
@@ -86,7 +86,7 @@ public class RfidPanelResourceIntegrationTest {
                                 put("/api/panels/request");
     }
 
-//    @Test
+    @Test
     public void whenSameTimeSameCardSamePanel_thenValidEvent(){
 
         final String cardId = "cc";
