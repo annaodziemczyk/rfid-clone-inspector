@@ -64,16 +64,18 @@ public class DistanceService implements IDistanceService {
         distanceToAirport+=calculateDistanceInMeters(to, toNearestAirport);
         long travelTimeToAirport = calculateTravelTime(distanceToAirport, TravelMode.DRIVING);
 
-        double distanceBetweenAirports=calculateDistanceInMeters(fromNearestAirport, toNearestAirport);
-        long travelTimeBetweenNearestAirports = this.calculateTravelTime(distanceBetweenAirports, TravelMode.TRANSIT);
+        if(fromNearestAirport!=null && toNearestAirport!=null){
+            double distanceBetweenAirports=calculateDistanceInMeters(fromNearestAirport, toNearestAirport);
+            long travelTimeBetweenNearestAirports = this.calculateTravelTime(distanceBetweenAirports, TravelMode.TRANSIT);
 
-        long airTravelTime = travelTimeBetweenNearestAirports+travelTimeToAirport;
+            long airTravelTime = travelTimeBetweenNearestAirports+travelTimeToAirport;
 
-        if(airTravelTime<travelRoute.getDurationInSeconds()){
-            travelRoute.setDurationInSeconds(airTravelTime);
-            travelRoute.setLengthInMeters(distanceBetweenAirports+distanceToAirport);
+            if(airTravelTime<travelRoute.getDurationInSeconds()){
+                travelRoute.setDurationInSeconds(airTravelTime);
+                travelRoute.setLengthInMeters(distanceBetweenAirports+distanceToAirport);
+            }
         }
-
+ 
         return travelRoute;
     }
 
