@@ -1,11 +1,15 @@
 package com.cit.restapi.rfidpanel.dto;
 
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import javax.validation.constraints.NotNull;
 
 /**
  * Created by odziea on 11/17/2018.
  */
 public class RfidPanelAccessRequestDto extends AccessRequestDto {
+
 
     @NotNull
     private String panelId;
