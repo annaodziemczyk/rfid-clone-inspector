@@ -11,8 +11,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +41,7 @@ public class AirportLookupService implements IAirportLookupService {
     @PostConstruct
     private void setupData() {
         try {
-            File file = new ClassPathResource("airports.dat").getFile();
+            InputStream file = new ClassPathResource("airports.dat").getInputStream();
             airports = csvReader.loadObjectList(Airport.class, file);
         } catch (IOException e) {
             logger.error("Cannot load airport list: " + e.getMessage());

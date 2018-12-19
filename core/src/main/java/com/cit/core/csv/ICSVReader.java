@@ -1,6 +1,7 @@
 package com.cit.core.csv;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -8,5 +9,5 @@ import java.util.List;
  */
 public interface ICSVReader {
 
-    <T> List<T> loadObjectList(Class<T> type, File file);
+    <T> List<T> loadObjectList(Class<T> type, InputStream file);
 }

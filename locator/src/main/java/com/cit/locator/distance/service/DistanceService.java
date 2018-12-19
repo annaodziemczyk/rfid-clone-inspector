@@ -75,7 +75,7 @@ public class DistanceService implements IDistanceService {
                 travelRoute.setLengthInMeters(distanceBetweenAirports+distanceToAirport);
             }
         }
- 
+
         return travelRoute;
     }
 

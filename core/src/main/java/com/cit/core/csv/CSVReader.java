@@ -9,6 +9,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class CSVReader implements ICSVReader{
     Logger logger = LoggerFactory.getLogger(CSVReader.class);
 
     @Override
-    public <T> List<T> loadObjectList(Class<T> type, File file) {
+    public <T> List<T> loadObjectList(Class<T> type, InputStream file) {
         try {
             CsvMapper mapper = new CsvMapper();
 //            CsvSchema schema = mapper.schemaFor(type);
@@ -47,7 +48,7 @@ public class CSVReader implements ICSVReader{
                     mapper.reader(type).with(schema).readValues(file);
             return readValues.readAll();
         } catch (Exception e) {
-            logger.error("Error occurred while loading object list from file " + file.getName(), e);
+            logger.error("Error occurred while loading object list from file ", e);
             return Collections.emptyList();
         }
     }
