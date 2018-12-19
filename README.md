@@ -8,6 +8,10 @@ https://rfidcloneinspector.cfapps.io
 * Java 8
 * Maven 
 
+## Environment Variables
+* GOOGLE_API_KEY=[your_key]
+* MQTT_BROKER=tcp://[mqtt_host_ip]:[port]
+
 ## Build
 
 mvn clean install
